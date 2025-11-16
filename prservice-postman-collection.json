@@ -1,0 +1,152 @@
+{
+  "info": {
+    "name": "PR Reviewer Assignment Service",
+    "_postman_id": "prservice-collection",
+    "description": "Postman collection for PR Reviewer Assignment Service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Team - Add",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/team/add",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"team_name\": \"backend\",\n  \"members\": [\n    {\n      \"user_id\": \"u1\",\n      \"username\": \"Alice\",\n      \"is_active\": true\n    },\n    {\n      \"user_id\": \"u2\",\n      \"username\": \"Bob\",\n      \"is_active\": true\n    },\n    {\n      \"user_id\": \"u3\",\n      \"username\": \"Charlie\",\n      \"is_active\": true\n    }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Team - Get",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/team/get?team_name=backend",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "team",
+            "get"
+          ],
+          "query": [
+            {
+              "key": "team_name",
+              "value": "backend"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "User - Set Active",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/users/setIsActive",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"user_id\": \"u3\",\n  \"is_active\": false\n}"
+        }
+      }
+    },
+    {
+      "name": "PR - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/pullRequest/create",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pull_request_id\": \"pr-1\",\n  \"pull_request_name\": \"Add login\",\n  \"author_id\": \"u1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "PR - Merge",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/pullRequest/merge",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pull_request_id\": \"pr-1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "PR - Reassign Reviewer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/pullRequest/reassign",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pull_request_id\": \"pr-1\",\n  \"old_user_id\": \"u2\"\n}"
+        }
+      }
+    },
+    {
+      "name": "User - Get Reviews",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/users/getReview?user_id=u2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "getReview"
+          ],
+          "query": [
+            {
+              "key": "user_id",
+              "value": "u2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ]
+}

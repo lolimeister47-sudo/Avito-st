@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16
+    container_name: prservice-db
+    environment:
+      POSTGRES_USER: pr_service
+      POSTGRES_PASSWORD: pr_service
+      POSTGRES_DB: pr_service
+    ports:
+      - "5432:5432"
+    volumes:
+      # при первом старте Postgres выполнит все *.sql из этой папки
+      - ./internal/db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pr_service -d pr_service"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: prservice-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_DSN: "postgres://pr_service:pr_service@db:5432/pr_service?sslmode=disable"
+      HTTP_ADDR: ":8080"
+    ports:
+      - "8080:8080"
